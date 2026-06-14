@@ -145,6 +145,19 @@
   .cta-btn:hover { background: #f0d48a; }
   .cta-btn:disabled { background: var(--warm-mid); color: var(--ghost); cursor: not-allowed; }
 
+  .replay-btn {
+    background: none;
+    border: 1px solid var(--warm-mid);
+    border-radius: 6px;
+    color: var(--ghost);
+    cursor: pointer;
+    font-size: .68rem;
+    padding: .1rem .4rem;
+    transition: all .2s;
+    margin-right: .3rem;
+  }
+  .replay-btn:hover { border-color: var(--spotlight-dim); color: var(--spotlight); }
+
   .settings-hint {
     font-size: 0.72rem;
     color: var(--ghost);
@@ -276,15 +289,18 @@
   .message.student { align-self: flex-end; }
 
   .message-role {
-    font-size: 0.62rem;
-    letter-spacing: 0.12em;
+    font-size: .62rem;
+    letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--ghost);
-    margin-bottom: 0.3rem;
-    padding-left: 0.1rem;
+    margin-bottom: .3rem;
+    padding-left: .1rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
   }
 
-  .message.student .message-role { text-align: right; padding-right: 0.1rem; }
+  .message.student .message-role { justify-content: flex-end; padding-right: .1rem; }
 
   .message-bubble {
     border-radius: 14px;
@@ -579,6 +595,14 @@
 </head>
 <body>
 
+<input type="file" id="script-file-input" accept=".txt,.md" style="display:none" />
+
+<!-- Script banner (shown in studio when script is loaded) -->
+<div id="script-banner" style="display:none;background:#1a1500;border-bottom:1px solid #3a3000;padding:.6rem 1.25rem;font-size:.75rem;color:var(--spotlight-dim);align-items:center;gap:.5rem;flex-shrink:0">
+  <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">📄 <span id="script-banner-text"></span></span>
+  <button onclick="clearScript()" style="background:none;border:none;color:var(--ghost);cursor:pointer;font-size:.8rem;padding:.2rem .4rem">✕ Remove</button>
+</div>
+
 <!-- ── SETTINGS OVERLAY ── -->
 <div id="settings-overlay">
   <div class="settings-card">
@@ -661,6 +685,14 @@
       </select>
     </div>
 
+    <div class="setup-section">
+      <label>Script (optional)</label>
+      <div class="upload-area" onclick="document.getElementById('script-file-input').click()" style="border:1px dashed var(--warm-mid);border-radius:var(--radius);padding:1rem;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:.5rem">
+        <p id="upload-label" style="font-size:.78rem;color:var(--ghost);margin:0">📄 Tap to upload a script (.txt file)</p>
+      </div>
+      <div id="script-preview" style="background:var(--stage);border:1px solid var(--warm-mid);border-radius:var(--radius);padding:.75rem 1rem;font-size:.78rem;color:var(--script);line-height:1.6;max-height:100px;overflow-y:auto;margin-bottom:.5rem;display:none;white-space:pre-wrap"></div>
+      <textarea id="script-text-input" placeholder="Or paste your script / lines here…" style="margin-bottom:.5rem"></textarea>
+    </div>
     <button class="cta-btn" onclick="beginSession()">Begin Session →</button>
   </div>
 </div>
@@ -696,6 +728,10 @@
     </span>
   </div>
 
+  <div id="studio-script-banner" style="display:none;background:#1a1500;border-bottom:1px solid #3a3000;padding:.6rem 1.25rem;font-size:.75rem;color:var(--spotlight-dim);align-items:center;gap:.5rem">
+    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">📄 <span id="script-banner-text"></span></span>
+    <button onclick="clearScript()" style="background:none;border:none;color:var(--ghost);cursor:pointer;font-size:.8rem;padding:.2rem .4rem">✕ Remove</button>
+  </div>
   <div class="conversation" id="conversation"></div>
 
   <div class="mic-area">
@@ -754,6 +790,46 @@ const state = {
   recognition: null,       // Web Speech (Claude backend)
 };
 
+// ── FILE UPLOAD ──
+document.addEventListener('DOMContentLoaded', function() {
+  const fileInput = document.getElementById('script-file-input');
+  if (fileInput) {
+    fileInput.addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const text = await file.text();
+      state.script = text.trim();
+      const ta = document.getElementById('script-text-input');
+      if (ta) ta.value = text.trim();
+      const lbl = document.getElementById('upload-label');
+      if (lbl) lbl.textContent = '✓ ' + file.name;
+      const preview = document.getElementById('script-preview');
+      if (preview) {
+        preview.textContent = text.substring(0, 300) + (text.length > 300 ? '…' : '');
+        preview.style.display = 'block';
+      }
+    });
+  }
+});
+
+function clearScript() {
+  state.script = '';
+  const b = document.getElementById('studio-script-banner');
+  if (b) b.style.display = 'none';
+}
+
+function updateScriptBanner() {
+  const b = document.getElementById('studio-script-banner');
+  if (!b) return;
+  if (state.script) {
+    b.style.display = 'flex';
+    const t = document.getElementById('script-banner-text');
+    if (t) t.textContent = state.script.substring(0, 60) + (state.script.length > 60 ? '…' : '');
+  } else {
+    b.style.display = 'none';
+  }
+}
+
 // ── SETTINGS ──
 function selectBackend(btn) {
   document.querySelectorAll('#backend-toggle .toggle-btn').forEach(b => b.classList.remove('active'));
@@ -797,6 +873,9 @@ function beginSession() {
   state.focus = focus;
   state.feedbackStyle = feedbackStyle;
   state.theme = theme;
+  // Read script from textarea if present
+  const scriptTA = document.getElementById('script-text-input');
+  if (scriptTA && scriptTA.value.trim()) state.script = scriptTA.value.trim();
   state.history = [];
   state.sessionCount++;
 
@@ -806,6 +885,7 @@ function beginSession() {
   updateSessionBar();
   updateFocusPill();
   clearConversation();
+  updateScriptBanner();
   kickoffSession();
 }
 
@@ -858,47 +938,59 @@ function clearConversation() {
 // ── SYSTEM PROMPT ──
 function buildSystemPrompt() {
   const focusDesc = state.focus === 'cinema'
-    ? 'cinema acting (intimate, naturalistic, subtle — like you are speaking to someone 30cm from your face; the microphone catches everything)'
-    : 'theatre acting (projected, resonant, expressive — the back row must hear and feel every word)';
+    ? 'cinema acting (intimate, naturalistic — microphone 30cm away, every tiny sound is caught)'
+    : 'theatre acting (projected, resonant — the back row must hear and feel every word)';
 
   const feedbackDesc = state.feedbackStyle === 'structured'
-    ? `After each student response, first continue the scene or exercise naturally (1-2 sentences), then give a structured "Coach Notes" section with specific pronunciation observations: note vowel sounds (e.g. "your short /ɪ/ in 'ship' was too close to /iː/"), consonant clarity, word stress, sentence rhythm, and intonation. Be precise and cite the specific words.`
-    : `Give feedback naturally woven into your coaching voice — like a real director giving notes between takes. Keep it warm, specific, and encouraging. Mention what worked before what needs adjustment. Never give a numbered list; speak as you would on a rehearsal floor.`;
+    ? 'After each student response, give a "Coach Notes:" section: cite specific words where vowels or consonants were wrong, identify stress and rhythm problems, note intonation issues. Lead with what was WRONG. Be ruthlessly specific. Never soften a real problem.'
+    : 'Weave feedback into your coaching voice like a director between takes. Lead with what needs fixing. Acknowledge what worked only briefly, after the critique. Never use empty praise like great job or well done unless the delivery was genuinely excellent.';
 
-  const themeDesc = {
-    'coach-choice': 'Choose a compelling scene or exercise appropriate to the student\'s level and the acting focus. Surprise her.',
-    'audition': 'This is audition prep. Give her a cold reading scenario — introduce the character briefly, then drop her into the scene.',
-    'scene-work': 'Focus on emotional range and authentic American speech under emotional pressure. Guide her through a scene with varying emotional beats.',
-    'monologue': 'Coach her through a monologue or extended solo speech. Ask her to perform a passage, then work on specific sections.',
-    'dialect': 'Focus specifically on American English phonetics: the American /r/, flap-T, low-back merger, intonation patterns, and connected speech.',
-    'interview': 'Run a character interview. She stays in character, you stay in character as the interviewer. Push her to maintain the accent under pressure.',
-    'improv': 'Improvisation work. Give her unexpected scenarios that require quick, spontaneous American speech — no time to overthink pronunciation.',
-  }[state.theme] || 'Choose the most useful exercise for today.';
+  const scriptSection = state.script
+    ? '\n\nSCRIPT FOR THIS SESSION:\n\"\"\"\n' + state.script.substring(0, 3000) + '\n\"\"\"\nWork through this script line by line. Give one line or section at a time. After she delivers it, give precise feedback before moving on.'
+    : '';
 
-  return `You are a world-class American accent and acting coach — experienced, precise, warm, and a little theatrical. You work with advanced non-native speakers (Italian mother tongue) training for professional acting roles in American cinema and theatre.
+  const themes = {
+    'coach-choice': 'Choose a challenging exercise. Make it demanding.',
+    'audition': 'Audition prep: cold reading. Introduce the character briefly, drop her into the scene immediately.',
+    'scene-work': 'Scene work with varying emotional beats. Focus on authentic American speech under emotional pressure.',
+    'monologue': 'Monologue coaching. Give her a passage, then dissect specific sections.',
+    'dialect': 'American English phonetics: rhotic R, flap-T, low-back merger, schwa reduction, intonation.',
+    'interview': 'Character interview. She stays in character, you interview her. Push hard.',
+    'improv': 'Improvisation. Unexpected scenarios requiring quick spontaneous American speech.',
+  };
+
+  return `You are a demanding, world-class American accent and acting coach. You do not give empty encouragement. You are direct and honest like a great director who respects the student enough to tell her the truth.
+
+Your student is an advanced Italian speaker training for professional acting in American cinema and theatre.
 
 TODAY'S FOCUS: ${focusDesc}
-SESSION THEME: ${themeDesc}
+SESSION THEME: ${themes[state.theme] || themes['coach-choice']}${scriptSection}
 
-YOUR APPROACH:
-- You ALWAYS speak first to set the scene, give a prompt, or read a line.
-- You treat this as a real conversation, not a quiz. The scene evolves based on her responses.
-- You remember everything said earlier in this session and reference it naturally.
-- You keep the energy of a real rehearsal room — purposeful, alive, never boring.
-- If she gives a strong response, push her further. If she struggles, offer a concrete technique.
-- Reference real acting techniques naturally (Meisner, Stanislavski, breath placement, resonance placement, etc.) when appropriate.
+YOUR CORE RULES:
+1. NEVER give positive feedback for a poor or mechanical performance. If she reads without emotion or with a strong Italian accent, say so directly: "That was mechanical. The Italian accent was showing. Again."
+2. NEVER interpret random filler sounds (uh, ah, mm, uh-uh) as artistic choices or technique. Call it out immediately: "That was not a performance. Give me the line."
+3. If she delivers something genuinely well, say so in one sentence then push further. Never dwell on praise.
+4. ALWAYS name the specific problem before suggesting the fix.
+5. Keep responses concise: max 4-5 sentences unless giving structured notes.
+6. If the input is incoherent or off-topic, do not make meaning out of noise. Ask her to try again.
 
 FEEDBACK PROTOCOL:
 ${feedbackDesc}
 
-ACCENT COACHING SPECIFICS:
-- Listen for: Italian interference patterns (e.g. adding vowels after final consonants, over-pronouncing every syllable equally, rolled R, lack of schwa reduction).
-- American General American priorities: rhotic R, flap-T (butter → "budder"), cot-caught merger, weak forms (of, to, and, the), thought groups and intonation.
-- Praise what is already working. Specificity builds confidence.
+ITALIAN INTERFERENCE PATTERNS TO LISTEN FOR:
+- Adding vowels after final consonants ("film-a", "take-a")
+- Equal syllable stress (Italian rhythm) vs English stress-timed rhythm
+- Rolled R instead of American rhotic R
+- Short vowel in "ship" spoken as long vowel in "sheep"
+- Lack of schwa reduction in unstressed syllables
+- Melodic Italian intonation vs flatter American patterns
+- "th" sounds replaced by t or d
 
-TONE: Direct, passionate about the craft, encouraging, never condescending. You love what you do.
+ACCENT PRIORITIES: Rhotic R, flap-T (butter becomes "budder"), cot-caught merger, weak forms of function words, thought groups.
 
-Start the session by introducing today's exercise and speaking a line or prompt she must respond to.`;
+TONE: Exacting, passionate, direct. Short sentences. No filler. No false warmth.
+
+Start by setting today's exercise and giving her the first line or prompt.\`;
 }
 
 // ── KICKOFF ──
@@ -951,6 +1043,7 @@ async function startRecording() {
       state.mediaRecorder.onstop = async () => {
         stream.getTracks().forEach(t => t.stop());
         const blob = new Blob(state.audioChunks, { type: 'audio/webm' });
+        state.lastRecordingUrl = URL.createObjectURL(blob);
         await processAudio(blob);
       };
 
@@ -976,7 +1069,7 @@ async function startRecording() {
       const transcript = e.results[0][0].transcript;
       state.isRecording = false;
       setMicState('processing');
-      await processTranscript(transcript);
+      await processTranscript(transcript, null);
     };
 
     state.recognition.onerror = (e) => {
@@ -1031,17 +1124,17 @@ async function processAudio(blob) {
     }
 
     const data = await res.json();
-    await processTranscript(data.text);
+    await processTranscript(data.text, state.lastRecordingUrl);
   } catch (e) {
     showToast('Transcription error: ' + e.message);
     setMicState('ready');
   }
 }
 
-async function processTranscript(transcript) {
+async function processTranscript(transcript, audioUrl = null) {
   if (!transcript.trim()) { setMicState('ready'); return; }
 
-  addMessage('student', transcript);
+  addMessage('student', transcript, null, audioUrl);
   state.history.push({ role: 'user', content: transcript });
   addTypingIndicator();
   setMicState('waiting');
@@ -1217,21 +1310,27 @@ function setMicState(state_) {
 }
 
 // ── CONVERSATION UI ──
-function addMessage(role, content, notes = null) {
+function addMessage(role, content, notes = null, audioUrl = null) {
   const conv = document.getElementById('conversation');
   const div = document.createElement('div');
   div.className = `message ${role}`;
-
   const roleLabel = role === 'coach' ? 'The Coach' : 'You';
-
-  div.innerHTML = `
-    <div class="message-role">${roleLabel}</div>
-    <div class="message-bubble">${escapeHtml(content)}</div>
-    ${notes ? `<div class="feedback-pill"><div class="feedback-label">${notes}</div></div>` : ''}
-  `;
-
+  const replayBtn = (role === 'student' && audioUrl)
+    ? `<button class="replay-btn" onclick="playRecording('${audioUrl}')" title="Replay your recording">&#9654; replay</button>`
+    : '';
+  const roleRow = role === 'student'
+    ? `<div class="message-role">${replayBtn}${roleLabel}</div>`
+    : `<div class="message-role">${roleLabel}</div>`;
+  div.innerHTML = roleRow
+    + `<div class="message-bubble">${escapeHtml(content)}</div>`
+    + (notes ? `<div class="feedback-pill"><div class="feedback-label">Coach Notes</div>${escapeHtml(notes)}</div>` : '');
   conv.appendChild(div);
   conv.scrollTop = conv.scrollHeight;
+}
+
+function playRecording(url) {
+  if (!url) return;
+  new Audio(url).play().catch(() => showToast('Could not play recording.'));
 }
 
 function addTypingIndicator() {
