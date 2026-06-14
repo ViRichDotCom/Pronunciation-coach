@@ -6,33 +6,41 @@
 <title>The Coach - American Accent Studio</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
-:root{--stage:#0e0c0a;--curtain:#1c1714;--gold:#e8c97a;--goldd:#b89a4e;--text:#f0ebe3;--ghost:#6b6057;--mid:#3a322b;--red:#c0392b;--fbg:#16120f;--r:12px}
+:root{--stage:#0e0c0a;--curtain:#1c1714;--gold:#e8c97a;--goldd:#b89a4e;--text:#f0ebe3;--ghost:#6b6057;--mid:#3a322b;--red:#c0392b;--green:#4caf50;--fbg:#16120f;--r:12px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--stage);color:var(--text);font-family:Inter,sans-serif;font-weight:300;min-height:100dvh;display:flex;flex-direction:column;overflow-x:hidden}
 .ov{position:fixed;inset:0;z-index:100;background:var(--stage);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;overflow-y:auto}
 .card{width:100%;max-width:480px}
-#setup-ov{position:fixed;inset:0;z-index:50;background:rgba(14,12,10,.97);display:flex;align-items:flex-start;justify-content:center;padding:1.5rem;overflow-y:auto}
+.scrim{position:fixed;inset:0;z-index:50;background:rgba(14,12,10,.97);display:flex;align-items:flex-start;justify-content:center;padding:1.5rem;overflow-y:auto}
 .scard{width:100%;max-width:480px;background:var(--curtain);border:1px solid var(--mid);border-radius:18px;padding:2rem 1.75rem;margin:auto}
 .brand{font-family:"Cormorant Garamond",serif;font-size:clamp(2rem,6vw,2.8rem);font-weight:300;font-style:italic;color:var(--gold);line-height:1.1;margin-bottom:.25rem}
 .sub{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ghost);margin-bottom:2.5rem}
 .scard h2{font-family:"Cormorant Garamond",serif;font-size:1.6rem;font-weight:300;color:var(--gold);margin-bottom:.25rem}
-.scard>p{font-size:.78rem;color:var(--ghost);margin-bottom:1.75rem;line-height:1.5}
+.scard>p{font-size:.78rem;color:var(--ghost);margin-bottom:1.5rem;line-height:1.5}
 .fg{margin-bottom:1.25rem}
 .ss{margin-bottom:1.25rem}
 label{display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ghost);margin-bottom:.5rem}
 input[type=password],select,textarea{width:100%;background:var(--curtain);border:1px solid var(--mid);border-radius:var(--r);color:var(--text);font-family:Inter,sans-serif;font-size:.9rem;padding:.75rem 1rem;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
+.scard input,.scard select,.scard textarea{background:var(--stage)}
 textarea{resize:vertical;min-height:90px;line-height:1.6}
 input:focus,select:focus,textarea:focus{border-color:var(--goldd)}
 .tg{display:flex;gap:.5rem}
 .tb{flex:1;background:var(--curtain);border:1px solid var(--mid);border-radius:var(--r);color:var(--ghost);font-family:Inter,sans-serif;font-size:.8rem;padding:.65rem .5rem;cursor:pointer;transition:all .2s;text-align:center}
+.scard .tb{background:var(--stage)}
 .tb.on{background:var(--mid);border-color:var(--goldd);color:var(--gold)}
-.cta{width:100%;margin-top:1.5rem;background:var(--gold);border:none;border-radius:var(--r);color:var(--stage);font-family:Inter,sans-serif;font-size:.85rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:1rem;cursor:pointer;transition:background .2s}
+.cta{width:100%;margin-top:1rem;background:var(--gold);border:none;border-radius:var(--r);color:var(--stage);font-family:Inter,sans-serif;font-size:.85rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:1rem;cursor:pointer;transition:background .2s}
 .cta:hover{background:#f0d48a}
+.cta.ghost{background:none;border:1px solid var(--mid);color:var(--ghost)}
+.cta.ghost:hover{border-color:var(--goldd);color:var(--gold)}
 .hint{font-size:.72rem;color:var(--ghost);margin-top:1.25rem;text-align:center;line-height:1.6}
 .upbox{border:1px dashed var(--mid);border-radius:var(--r);padding:1rem;text-align:center;cursor:pointer;margin-bottom:.5rem}
 .upbox:hover{border-color:var(--goldd)}
 .upbox p{font-size:.78rem;color:var(--ghost);margin:0}
 #sprev{background:var(--stage);border:1px solid var(--mid);border-radius:var(--r);padding:.75rem 1rem;font-size:.78rem;color:var(--text);line-height:1.6;max-height:100px;overflow-y:auto;margin-bottom:.5rem;display:none;white-space:pre-wrap}
+.mode-card{background:var(--stage);border:1px solid var(--mid);border-radius:var(--r);padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s;margin-bottom:.75rem}
+.mode-card:hover{border-color:var(--goldd)}
+.mode-card h3{font-family:"Cormorant Garamond",serif;font-size:1.25rem;font-weight:400;color:var(--gold);margin-bottom:.3rem}
+.mode-card p{font-size:.76rem;color:var(--ghost);line-height:1.5;margin:0}
 #studio{display:none;flex-direction:column;min-height:100dvh}
 .sh{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--mid);flex-shrink:0}
 .logo{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.2rem;color:var(--gold);font-weight:300}
@@ -40,18 +48,19 @@ input:focus,select:focus,textarea:focus{border-color:var(--goldd)}
 .pr{display:flex;background:var(--curtain);border-radius:20px;padding:3px;gap:2px}
 .pb{background:none;border:none;border-radius:16px;color:var(--ghost);font-family:Inter,sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .65rem;cursor:pointer;transition:all .2s}
 .pb.on{background:var(--mid);color:var(--gold)}
-.ibtn{background:none;border:none;color:var(--ghost);cursor:pointer;padding:.4rem;border-radius:8px;font-size:1.1rem}
+.ibtn{background:none;border:none;color:var(--ghost);cursor:pointer;padding:.4rem;border-radius:8px;font-size:.95rem}
 .ibtn:hover{color:var(--text)}
 .sbar{display:flex;align-items:center;gap:.75rem;padding:.6rem 1.25rem;background:var(--fbg);font-size:.7rem;letter-spacing:.06em;color:var(--ghost);border-bottom:1px solid var(--mid);flex-shrink:0;flex-wrap:wrap}
 .stag{display:flex;align-items:center;gap:.3rem}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--ghost)}
-.dot.cinema{background:var(--red)}
-.dot.theatre{background:var(--gold)}
-.dot.live{background:#4caf50;animation:pulse 1.5s infinite}
+.dot.live{background:var(--green);animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-#scbar{display:none;background:#1a1500;border-bottom:1px solid #3a3000;padding:.6rem 1.25rem;font-size:.75rem;color:var(--goldd);align-items:center;gap:.5rem;flex-shrink:0}
-#scbar span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#scbar button{background:none;border:none;color:var(--ghost);cursor:pointer;font-size:.8rem}
+.plan-bar{display:none;background:#13180f;border-bottom:1px solid #283318;padding:.7rem 1.25rem;flex-shrink:0}
+.plan-bar .pt{font-size:.7rem;letter-spacing:.06em;color:var(--green);text-transform:uppercase;margin-bottom:.4rem;display:flex;justify-content:space-between;align-items:center}
+.plan-bar .pt button{background:none;border:none;color:var(--ghost);font-size:.7rem;cursor:pointer;text-decoration:underline}
+.lesson-name{font-size:.85rem;color:var(--text);margin-bottom:.5rem}
+.prog-track{height:6px;background:var(--mid);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--green);border-radius:3px;transition:width .5s ease;width:0}
 .conv{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:1rem;scroll-behavior:smooth}
 .msg{max-width:90%;animation:fu .3s ease}
 @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -64,8 +73,15 @@ input:focus,select:focus,textarea:focus{border-color:var(--goldd)}
 .bub{border-radius:14px;padding:.9rem 1.1rem;line-height:1.65;font-size:.88rem}
 .msg.coach .bub{background:var(--curtain);border:1px solid var(--mid);border-bottom-left-radius:4px}
 .msg.student .bub{background:var(--mid);border-bottom-right-radius:4px}
+.read-card{margin-top:.6rem;background:#12100c;border:1px solid var(--goldd);border-radius:10px;padding:.8rem 1rem}
+.read-card .rl{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--goldd);margin-bottom:.4rem}
+.read-card .rt{font-size:1rem;line-height:1.7;color:var(--text);font-family:"Cormorant Garamond",serif}
 .npill{margin-top:.6rem;background:var(--fbg);border:1px solid #2a2018;border-radius:10px;padding:.7rem .9rem;font-size:.78rem;color:#d4a843;line-height:1.65}
 .nlbl{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ghost);margin-bottom:.3rem}
+.score-row{display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap}
+.score-chip{font-size:.66rem;padding:.2rem .5rem;border-radius:6px;border:1px solid var(--mid);color:var(--ghost)}
+.score-chip.good{border-color:var(--green);color:var(--green)}
+.score-chip.bad{border-color:var(--red);color:#e88}
 .typing{display:flex;gap:4px;align-items:center;padding:.9rem 1.1rem}
 .td{width:6px;height:6px;border-radius:50%;background:var(--ghost);animation:tba 1.2s infinite}
 .td:nth-child(2){animation-delay:.2s}
@@ -83,26 +99,38 @@ input:focus,select:focus,textarea:focus{border-color:var(--goldd)}
 @keyframes wa{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
 .mring{position:relative;width:72px;height:72px;display:flex;align-items:center;justify-content:center}
 .mring-bg{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--mid)}
-.mbtn{width:56px;height:56px;border-radius:50%;background:var(--curtain);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;position:relative;z-index:1;color:var(--text);font-size:1.4rem}
+.mbtn{width:56px;height:56px;border-radius:50%;background:var(--curtain);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;position:relative;z-index:1;color:var(--text);font-size:.85rem;letter-spacing:.05em}
 .mbtn:hover{background:var(--mid)}
 .mbtn.rec{background:var(--red);animation:mp 1s infinite}
 @keyframes mp{0%,100%{box-shadow:0 0 0 4px rgba(192,57,43,.2)}50%{box-shadow:0 0 0 10px rgba(192,57,43,.05)}}
 .mbtn:disabled{opacity:.4;cursor:not-allowed}
 .mlbl{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost)}
-.brow{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:360px}
+.brow{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:380px}
 .bc{display:flex;flex-direction:column;align-items:center;gap:.3rem}
-.bc button{background:none;border:1px solid var(--mid);border-radius:10px;color:var(--ghost);cursor:pointer;font-size:1rem;padding:.5rem .8rem;transition:all .2s}
+.bc button{background:none;border:1px solid var(--mid);border-radius:10px;color:var(--ghost);cursor:pointer;font-size:.7rem;padding:.5rem .7rem;transition:all .2s}
 .bc button:hover{border-color:var(--ghost);color:var(--text)}
 .bc button.on{border-color:var(--goldd);color:var(--gold)}
-.bc span{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost)}
+.bc span{font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ghost)}
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:#3a1010;border:1px solid #6b2020;border-radius:10px;padding:.75rem 1.25rem;font-size:.82rem;color:#f08080;max-width:320px;text-align:center;transition:transform .3s;z-index:200}
 .toast.on{transform:translateX(-50%) translateY(0)}
-#fin{display:none}
+.toast.ok{background:#103a18;border-color:#206b30;color:#8fe0a0}
+.plan-list{margin:1rem 0}
+.plan-item{display:flex;align-items:flex-start;gap:.7rem;padding:.7rem 0;border-bottom:1px solid var(--mid)}
+.plan-item:last-child{border-bottom:none}
+.pdot{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--mid);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--ghost);margin-top:.1rem}
+.plan-item.done .pdot{background:var(--green);border-color:var(--green);color:var(--stage)}
+.plan-item.current .pdot{border-color:var(--gold);color:var(--gold)}
+.plan-item .pi-body h4{font-size:.85rem;font-weight:500;color:var(--text);margin-bottom:.2rem}
+.plan-item.done .pi-body h4{color:var(--ghost)}
+.plan-item .pi-body p{font-size:.72rem;color:var(--ghost);line-height:1.5}
+#fin,#fin-json{display:none}
 </style>
 </head>
 <body>
 <input type="file" id="fin" accept=".txt,.md" />
+<input type="file" id="fin-json" accept=".json" />
 
+<!-- SETTINGS -->
 <div class="ov" id="ov-settings">
   <div class="card">
     <div class="brand">The Coach</div>
@@ -134,14 +162,32 @@ input:focus,select:focus,textarea:focus{border-color:var(--goldd)}
       <input type="password" id="cl-key" placeholder="sk-ant-..." autocomplete="off" />
       <p style="font-size:.7rem;color:var(--ghost);margin-top:.5rem;line-height:1.5">Uses browser Web Speech API for voice on mobile.</p>
     </div>
-    <button class="cta" onclick="doStart()">Enter the Studio</button>
+    <button class="cta" onclick="doStart()">Continue</button>
     <p class="hint">Keys are stored only in this browser session and sent directly to the provider API.</p>
   </div>
 </div>
 
-<div id="setup-ov" style="display:none">
+<!-- MODE PICKER -->
+<div class="scrim" id="ov-mode" style="display:none">
   <div class="scard">
-    <h2>New Session</h2>
+    <h2>Choose a Mode</h2>
+    <p>Two ways to train. Pick one.</p>
+    <div class="mode-card" onclick="pickMode('pron')">
+      <h3>Pronunciation Training</h3>
+      <p>A structured course. The coach runs a diagnostic, builds a personalised plan of lessons, and tracks your progress over time. Focus is purely on sounds, rhythm and clarity.</p>
+    </div>
+    <div class="mode-card" onclick="pickMode('acting')">
+      <h3>Acting Coach</h3>
+      <p>Free scene work for cinema and theatre. Demanding, conversational coaching with feedback woven in. No fixed curriculum.</p>
+    </div>
+    <button class="cta ghost" onclick="document.getElementById('fin-json').click()" style="margin-top:1rem">Import saved progress (.json)</button>
+  </div>
+</div>
+
+<!-- ACTING SETUP -->
+<div class="scrim" id="ov-acting" style="display:none">
+  <div class="scard">
+    <h2>Acting Session</h2>
     <p>The coach will be demanding. That is the point.</p>
     <div class="ss">
       <label>Acting Focus</label>
@@ -164,7 +210,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--goldd)}
         <option value="audition">Audition - cold reading</option>
         <option value="scene-work">Scene work - emotional range</option>
         <option value="monologue">Monologue coaching</option>
-        <option value="dialect">Dialect focus - American vowels and rhythm</option>
+        <option value="dialect">Dialect focus</option>
         <option value="interview">Character interview</option>
         <option value="improv">Improvisation</option>
       </select>
@@ -177,29 +223,37 @@ input:focus,select:focus,textarea:focus{border-color:var(--goldd)}
       <div id="sprev"></div>
       <textarea id="sta" placeholder="Or paste your script / lines here" style="margin-top:.5rem"></textarea>
     </div>
-    <button class="cta" onclick="doBegin()">Begin Session</button>
+    <button class="cta" onclick="beginActing()">Begin Session</button>
+    <button class="cta ghost" onclick="backToMode()">Back</button>
   </div>
 </div>
 
+<!-- PRON RESUME / START -->
+<div class="scrim" id="ov-pron" style="display:none">
+  <div class="scard" id="pron-card-inner"></div>
+</div>
+
+<!-- STUDIO -->
 <div id="studio">
   <div class="sh">
     <div class="logo">The Coach</div>
     <div class="hc">
-      <div class="pr" id="fps">
+      <div class="pr" id="acting-pills" style="display:none">
         <button class="pb on" data-val="cinema" onclick="chFocus(this)">Cinema</button>
         <button class="pb" data-val="theatre" onclick="chFocus(this)">Theatre</button>
       </div>
+      <button class="ibtn" id="plan-btn" onclick="showPlan()" style="display:none">plan</button>
       <button class="ibtn" onclick="openSettings()">settings</button>
     </div>
   </div>
   <div class="sbar">
-    <span class="stag"><span class="dot live"></span><span id="slbl">Session 1</span></span>
-    <span class="stag"><span class="dot cinema" id="fdot"></span><span id="flbl">Cinema</span></span>
-    <span class="stag"><span style="opacity:.5">notes:</span><span id="fblbl">Coach voice</span></span>
+    <span class="stag"><span class="dot live"></span><span id="slbl">Session</span></span>
+    <span class="stag" id="mode-tag"></span>
   </div>
-  <div id="scbar">
-    <span>Script: <span id="scbartxt"></span></span>
-    <button onclick="clearSc()">remove</button>
+  <div class="plan-bar" id="plan-bar">
+    <div class="pt"><span id="plan-stage-lbl">Lesson</span><button onclick="showPlan()">view plan</button></div>
+    <div class="lesson-name" id="lesson-name"></div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
   </div>
   <div class="conv" id="conv"></div>
   <div class="mica">
@@ -212,20 +266,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--goldd)}
       <button class="mbtn" id="mbtn" onclick="doRec()">mic</button>
     </div>
     <div class="mlbl" id="mlbl">Tap to speak</div>
-    <div class="brow">
-      <div class="bc">
-        <button id="fbbtn" class="on" onclick="togFb()">notes</button>
-        <span id="fbblbl">Coach notes</span>
-      </div>
-      <div class="bc">
-        <button onclick="doNewSess()">new</button>
-        <span>New session</span>
-      </div>
-      <div class="bc">
-        <button id="audbtn" class="on" onclick="togAud()">audio</button>
-        <span>Coach voice</span>
-      </div>
-    </div>
+    <div class="brow" id="brow"></div>
   </div>
 </div>
 
@@ -234,14 +275,44 @@ input:focus,select:focus,textarea:focus{border-color:var(--goldd)}
 <script>
 var G = {
   bk:'openai', ok:'', ck:'', voice:'fable',
+  mode:'pron',
   focus:'cinema', fb:'conv', theme:'coach-choice', script:'',
-  hist:[], sn:0, recording:false, audioOn:true,
-  mr:null, chunks:[], recog:null, lastUrl:null
+  hist:[], audioOn:true,
+  recording:false, mr:null, chunks:[], recog:null, lastUrl:null,
+  // pron state
+  plan:null, currentLesson:0, phase:'idle'
 };
 
+var STORE_KEY = 'thecoach_pron_v1';
+
+// ---------- persistence ----------
+function loadStore() {
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return null;
+}
+function saveStore() {
+  if (!G.plan) return;
+  try {
+    var data = { plan:G.plan, currentLesson:G.currentLesson, hist:G.hist, savedAt:Date.now() };
+    localStorage.setItem(STORE_KEY, JSON.stringify(data));
+  } catch(e) {}
+}
+function exportProgress() {
+  var data = { plan:G.plan, currentLesson:G.currentLesson, hist:G.hist, savedAt:Date.now() };
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'pronunciation-progress.json';
+  a.click();
+  toastOk('Progress exported.');
+}
+
+// ---------- file inputs ----------
 document.getElementById('fin').addEventListener('change', function(e) {
-  var f = e.target.files[0];
-  if (!f) return;
+  var f = e.target.files[0]; if (!f) return;
   var r = new FileReader();
   r.onload = function(ev) {
     var t = ev.target.result.trim();
@@ -249,193 +320,436 @@ document.getElementById('fin').addEventListener('change', function(e) {
     document.getElementById('sta').value = t;
     document.getElementById('uplbl').textContent = 'Loaded: ' + f.name;
     var p = document.getElementById('sprev');
-    p.textContent = t.substring(0,300) + (t.length > 300 ? '...' : '');
+    p.textContent = t.substring(0,300) + (t.length>300?'...':'');
     p.style.display = 'block';
   };
   r.readAsText(f);
 });
 
+document.getElementById('fin-json').addEventListener('change', function(e) {
+  var f = e.target.files[0]; if (!f) return;
+  var r = new FileReader();
+  r.onload = function(ev) {
+    try {
+      var data = JSON.parse(ev.target.result);
+      if (data.plan) {
+        G.plan = data.plan;
+        G.currentLesson = data.currentLesson || 0;
+        G.hist = data.hist || [];
+        saveStore();
+        toastOk('Progress imported.');
+        G.mode = 'pron';
+        openPronResume();
+      } else {
+        toast('Invalid progress file.');
+      }
+    } catch(err) { toast('Could not read file: ' + err.message); }
+  };
+  r.readAsText(f);
+});
+
+// ---------- settings ----------
 function selB(btn) {
-  document.querySelectorAll('#btg .tb').forEach(function(b) { b.classList.remove('on'); });
+  var els = document.querySelectorAll('#btg .tb');
+  for (var i=0;i<els.length;i++) els[i].classList.remove('on');
   btn.classList.add('on');
   G.bk = btn.getAttribute('data-val');
-  document.getElementById('oai-f').style.display = G.bk === 'openai' ? '' : 'none';
-  document.getElementById('oai-vf').style.display = G.bk === 'openai' ? '' : 'none';
-  document.getElementById('cl-f').style.display = G.bk === 'claude' ? '' : 'none';
+  document.getElementById('oai-f').style.display = G.bk==='openai'?'':'none';
+  document.getElementById('oai-vf').style.display = G.bk==='openai'?'':'none';
+  document.getElementById('cl-f').style.display = G.bk==='claude'?'':'none';
 }
-
 function selTg(btn, gid) {
-  document.querySelectorAll('#' + gid + ' .tb').forEach(function(b) { b.classList.remove('on'); });
+  var els = document.querySelectorAll('#'+gid+' .tb');
+  for (var i=0;i<els.length;i++) els[i].classList.remove('on');
   btn.classList.add('on');
 }
-
 function doStart() {
   try {
     var ok = document.getElementById('oai-key').value.trim();
     var ck = document.getElementById('cl-key').value.trim();
-    toast('DEBUG: backend=' + G.bk + ' key_len=' + ok.length);
-    if (G.bk === 'openai' && !ok) { toast('Please enter your OpenAI API key.'); return; }
-    if (G.bk === 'claude' && !ck) { toast('Please enter your Anthropic API key.'); return; }
-    G.ok = ok;
-    G.ck = ck;
+    if (G.bk==='openai' && !ok) { toast('Please enter your OpenAI API key.'); return; }
+    if (G.bk==='claude' && !ck) { toast('Please enter your Anthropic API key.'); return; }
+    G.ok = ok; G.ck = ck;
     G.voice = document.getElementById('oai-voice').value;
     document.getElementById('ov-settings').style.display = 'none';
-    document.getElementById('setup-ov').style.display = 'flex';
-  } catch(e) {
-    toast('ERROR: ' + e.message);
+    document.getElementById('ov-mode').style.display = 'flex';
+  } catch(e) { toast('Error: ' + e.message); }
+}
+function openSettings() { document.getElementById('ov-settings').style.display = 'flex'; }
+
+// ---------- mode picking ----------
+function pickMode(m) {
+  G.mode = m;
+  document.getElementById('ov-mode').style.display = 'none';
+  if (m === 'acting') {
+    document.getElementById('ov-acting').style.display = 'flex';
+  } else {
+    openPronResume();
+  }
+}
+function backToMode() {
+  document.getElementById('ov-acting').style.display = 'none';
+  document.getElementById('ov-pron').style.display = 'none';
+  document.getElementById('ov-mode').style.display = 'flex';
+}
+
+// ---------- PRON: resume or start screen ----------
+function openPronResume() {
+  document.getElementById('ov-acting').style.display = 'none';
+  var stored = G.plan ? {plan:G.plan, currentLesson:G.currentLesson, hist:G.hist} : loadStore();
+  var inner = document.getElementById('pron-card-inner');
+  if (stored && stored.plan) {
+    G.plan = stored.plan;
+    G.currentLesson = stored.currentLesson || 0;
+    G.hist = stored.hist || [];
+    var done = 0;
+    for (var i=0;i<G.plan.lessons.length;i++) if (G.plan.lessons[i].done) done++;
+    var cur = G.plan.lessons[G.currentLesson];
+    var curName = cur ? cur.title : 'Course complete';
+    inner.innerHTML =
+      '<h2>Welcome back</h2>' +
+      '<p>You have a saved plan: ' + esc(G.plan.summary || 'Pronunciation course') + '</p>' +
+      '<div style="background:var(--stage);border:1px solid var(--mid);border-radius:12px;padding:1rem;margin-bottom:1rem">' +
+      '<div style="font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);margin-bottom:.4rem">Progress</div>' +
+      '<div style="font-size:.9rem;color:var(--text);margin-bottom:.5rem">' + done + ' of ' + G.plan.lessons.length + ' lessons complete</div>' +
+      '<div style="font-size:.78rem;color:var(--gold)">Next: ' + esc(curName) + '</div>' +
+      '</div>' +
+      '<label>When resuming</label>' +
+      '<div class="ss" style="margin-top:.4rem">' +
+      '<label style="text-transform:none;letter-spacing:0;font-size:.8rem;color:var(--text);display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem"><input type="checkbox" id="opt-summary" checked style="width:auto"> Give me a progress summary first</label>' +
+      '<label style="text-transform:none;letter-spacing:0;font-size:.8rem;color:var(--text);display:flex;align-items:center;gap:.5rem"><input type="checkbox" id="opt-review" style="width:auto"> Review the previous lesson before continuing</label>' +
+      '</div>' +
+      '<button class="cta" onclick="resumePron()">Continue Course</button>' +
+      '<button class="cta ghost" onclick="exportProgress()">Export progress (.json)</button>' +
+      '<button class="cta ghost" onclick="confirmRestart()">Start over (new diagnostic)</button>' +
+      '<button class="cta ghost" onclick="backToMode()">Back</button>';
+  } else {
+    inner.innerHTML =
+      '<h2>Pronunciation Training</h2>' +
+      '<p>First, a short diagnostic. The coach will give you a passage crafted to reveal the sounds Italian speakers find hardest. Read it aloud, and the coach builds your personalised plan.</p>' +
+      '<button class="cta" onclick="startDiagnostic()">Start Diagnostic</button>' +
+      '<button class="cta ghost" onclick="document.getElementById(\'fin-json\').click()">Import saved progress (.json)</button>' +
+      '<button class="cta ghost" onclick="backToMode()">Back</button>';
+  }
+  document.getElementById('ov-pron').style.display = 'flex';
+}
+
+function confirmRestart() {
+  if (confirm('This will erase your current plan and progress. Continue?')) {
+    G.plan = null; G.currentLesson = 0; G.hist = [];
+    try { localStorage.removeItem(STORE_KEY); } catch(e) {}
+    openPronResume();
   }
 }
 
-function openSettings() {
-  document.getElementById('ov-settings').style.display = 'flex';
+// ---------- studio chrome ----------
+function enterStudio() {
+  document.getElementById('ov-mode').style.display = 'none';
+  document.getElementById('ov-acting').style.display = 'none';
+  document.getElementById('ov-pron').style.display = 'none';
+  document.getElementById('studio').style.display = 'flex';
+  document.getElementById('conv').innerHTML = '';
+  setupChrome();
 }
 
-function doBegin() {
+function setupChrome() {
+  var actingPills = document.getElementById('acting-pills');
+  var planBtn = document.getElementById('plan-btn');
+  var planBar = document.getElementById('plan-bar');
+  var brow = document.getElementById('brow');
+  var modeTag = document.getElementById('mode-tag');
+
+  if (G.mode === 'acting') {
+    actingPills.style.display = 'flex';
+    planBtn.style.display = 'none';
+    planBar.style.display = 'none';
+    modeTag.innerHTML = '<span style="opacity:.5">Acting</span>';
+    document.getElementById('slbl').textContent = 'Acting session';
+    brow.innerHTML =
+      '<div class="bc"><button id="fbbtn" class="on" onclick="togFb()">notes</button><span>Feedback</span></div>' +
+      '<div class="bc"><button onclick="backToMode()">menu</button><span>Menu</span></div>' +
+      '<div class="bc"><button id="audbtn" class="on" onclick="togAud()">audio</button><span>Voice</span></div>';
+  } else {
+    actingPills.style.display = 'none';
+    planBtn.style.display = G.plan ? '' : 'none';
+    planBar.style.display = G.plan ? 'block' : 'none';
+    modeTag.innerHTML = '<span style="opacity:.5">Pronunciation</span>';
+    document.getElementById('slbl').textContent = 'Training';
+    brow.innerHTML =
+      '<div class="bc"><button onclick="exportProgress()">save</button><span>Export</span></div>' +
+      '<div class="bc"><button onclick="backToMode()">menu</button><span>Menu</span></div>' +
+      '<div class="bc"><button id="audbtn" class="on" onclick="togAud()">audio</button><span>Voice</span></div>';
+    updatePlanBar();
+  }
+}
+
+function updatePlanBar() {
+  if (!G.plan) return;
+  var L = G.plan.lessons[G.currentLesson];
+  var done = 0;
+  for (var i=0;i<G.plan.lessons.length;i++) if (G.plan.lessons[i].done) done++;
+  document.getElementById('plan-stage-lbl').textContent = 'Lesson ' + (G.currentLesson+1) + ' of ' + G.plan.lessons.length;
+  document.getElementById('lesson-name').textContent = L ? L.title : 'Course complete';
+  var pct = Math.round((done / G.plan.lessons.length) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+}
+
+// ---------- ACTING flow ----------
+function chFocus(btn) {
+  var els = document.querySelectorAll('#acting-pills .pb');
+  for (var i=0;i<els.length;i++) els[i].classList.remove('on');
+  btn.classList.add('on');
+  G.focus = btn.getAttribute('data-val');
+}
+function togFb() {
+  G.fb = G.fb==='conv'?'struct':'conv';
+  document.getElementById('fbbtn').classList.toggle('on', G.fb==='conv');
+}
+function togAud() {
+  G.audioOn = !G.audioOn;
+  document.getElementById('audbtn').classList.toggle('on', G.audioOn);
+}
+
+function beginActing() {
   G.focus = document.querySelector('#ftg .tb.on').getAttribute('data-val');
   G.fb = document.querySelector('#fbtg .tb.on').getAttribute('data-val');
   G.theme = document.getElementById('tsel').value;
   var ta = document.getElementById('sta').value.trim();
   if (ta) G.script = ta;
   G.hist = [];
-  G.sn++;
-  document.getElementById('setup-ov').style.display = 'none';
-  document.getElementById('studio').style.display = 'flex';
-  updBar();
-  updPills();
-  document.getElementById('conv').innerHTML = '';
-  updScBar();
-  kickoff();
+  enterStudio();
+  kickoffActing();
 }
 
-function doNewSess() { document.getElementById('setup-ov').style.display = 'flex'; }
-
-function clearSc() {
-  G.script = '';
-  document.getElementById('scbar').style.display = 'none';
+function kickoffActing() {
+  setMic('wait'); addTyping();
+  G.hist.push({role:'user', content:'Begin the session.'});
+  ai(actingSys()).then(function(rep) {
+    G.hist.push({role:'assistant', content:rep});
+    rmTyping(); addMsg('coach', rep);
+    if (G.audioOn) tts(rep);
+    setMic('ready');
+  }).catch(function(e) { rmTyping(); toast('Error: '+e.message); setMic('ready'); });
 }
 
-function updScBar() {
-  var b = document.getElementById('scbar');
-  if (G.script) {
-    b.style.display = 'flex';
-    document.getElementById('scbartxt').textContent = G.script.substring(0, 60) + (G.script.length > 60 ? '...' : '');
-  } else {
-    b.style.display = 'none';
-  }
-}
-
-function updBar() {
-  document.getElementById('flbl').textContent = G.focus === 'cinema' ? 'Cinema' : 'Theatre';
-  document.getElementById('fdot').className = 'dot ' + G.focus;
-  document.getElementById('fblbl').textContent = G.fb === 'conv' ? 'Coach voice' : 'Structured';
-  document.getElementById('slbl').textContent = 'Session ' + G.sn;
-}
-
-function updPills() {
-  document.querySelectorAll('#fps .pb').forEach(function(b) {
-    b.classList.toggle('on', b.getAttribute('data-val') === G.focus);
-  });
-}
-
-function chFocus(btn) {
-  document.querySelectorAll('#fps .pb').forEach(function(b) { b.classList.remove('on'); });
-  btn.classList.add('on');
-  G.focus = btn.getAttribute('data-val');
-  updBar();
-}
-
-function togFb() {
-  G.fb = G.fb === 'conv' ? 'struct' : 'conv';
-  updBar();
-  document.getElementById('fbbtn').classList.toggle('on', G.fb === 'conv');
-  document.getElementById('fbblbl').textContent = G.fb === 'conv' ? 'Coach notes' : 'Structured';
-}
-
-function togAud() {
-  G.audioOn = !G.audioOn;
-  document.getElementById('audbtn').classList.toggle('on', G.audioOn);
-}
-
-function buildSys() {
-  var fd = G.focus === 'cinema'
-    ? 'cinema acting (intimate, naturalistic, microphone 30cm away)'
-    : 'theatre acting (projected, resonant, the back row must hear every word)';
-
-  var fbd = G.fb === 'struct'
-    ? 'After each response give a Coach Notes section: cite specific words where vowels or consonants were wrong, identify stress and rhythm problems. Lead with what was WRONG. Be ruthlessly specific.'
-    : 'Weave feedback into your coaching voice like a director between takes. Lead with what needs fixing. Acknowledge what worked only briefly. Never use empty praise unless the delivery was genuinely excellent.';
-
-  var sp = G.script
-    ? '\n\nSCRIPT FOR THIS SESSION:\n' + G.script.substring(0, 3000) + '\nWork through this script line by line. Give one line at a time. After she delivers it, give precise feedback before moving on.'
-    : '';
-
+function actingSys() {
+  var fd = G.focus==='cinema'
+    ? 'cinema acting (intimate, naturalistic, microphone close)'
+    : 'theatre acting (projected, resonant)';
+  var fbd = G.fb==='struct'
+    ? 'After each response give a Coach Notes section citing specific words that were wrong. Lead with what was WRONG. Be ruthlessly specific.'
+    : 'Weave feedback into your coaching voice like a director between takes. Lead with what needs fixing. Never use empty praise unless genuinely excellent.';
+  var sp = G.script ? '\n\nSCRIPT:\n' + G.script.substring(0,3000) + '\nWork through it line by line.' : '';
   var th = {};
-  th["coach-choice"] = 'Choose a challenging exercise. Make it demanding.';
-  th["audition"] = 'Audition prep, cold reading. Introduce the character briefly, drop her into the scene immediately.';
-  th["scene-work"] = 'Scene work with varying emotional beats. Focus on authentic American speech under pressure.';
-  th["monologue"] = 'Monologue coaching. Give her a passage, then dissect specific sections.';
-  th["dialect"] = 'American English phonetics: rhotic R, flap-T, low-back merger, schwa reduction, intonation.';
-  th["interview"] = 'Character interview. She stays in character, you interview her. Push hard.';
-  th["improv"] = 'Improvisation. Unexpected scenarios requiring quick spontaneous American speech.';
-
+  th['coach-choice']='Choose a challenging exercise.';
+  th['audition']='Audition prep, cold reading.';
+  th['scene-work']='Scene work with emotional beats.';
+  th['monologue']='Monologue coaching.';
+  th['dialect']='American phonetics focus.';
+  th['interview']='Character interview, push hard.';
+  th['improv']='Improvisation, spontaneous American speech.';
   var lines = [
-    'You are a demanding world-class American accent and acting coach.',
-    'You do not give empty encouragement. You are direct and honest.',
-    '',
-    'Your student is an advanced Italian speaker training for professional acting in American cinema and theatre.',
-    '',
+    'You are a demanding world-class American accent and acting coach. Direct and honest, never empty praise.',
+    'Your student is an advanced Italian speaker training for professional acting.',
     'FOCUS: ' + fd,
-    'THEME: ' + (th[G.theme] || th["coach-choice"]) + sp,
-    '',
-    'RULES:',
-    '1. NEVER give positive feedback for a poor or mechanical performance. Say: That was mechanical. The accent was showing. Again.',
-    '2. NEVER interpret random sounds (uh, ah, mm) as artistic choices. Say: That was not a performance. Give me the line.',
-    '3. If she delivers something genuinely well, say so in one sentence then push further.',
-    '4. Always name the specific problem before suggesting the fix.',
-    '5. Keep responses concise: max 4-5 sentences unless giving structured notes.',
-    '6. If the input is incoherent, ask her to try again.',
-    '',
+    'THEME: ' + (th[G.theme]||th['coach-choice']) + sp,
+    'RULES: Never praise a poor or mechanical performance. Never treat random sounds (uh, ah) as choices; call it out. If she does well, say so briefly and push further. Name the specific problem before the fix. Max 4-5 sentences.',
     'FEEDBACK: ' + fbd,
-    '',
-    'ITALIAN INTERFERENCE TO LISTEN FOR:',
-    '- Adding vowels after final consonants (film-a, take-a)',
-    '- Equal syllable stress vs English stress-timed rhythm',
-    '- Rolled R instead of American rhotic R',
-    '- Short i in ship spoken as long ee in sheep',
-    '- Lack of schwa reduction in unstressed syllables',
-    '- Melodic Italian intonation vs flatter American patterns',
-    '- th sounds replaced by t or d',
-    '',
-    'ACCENT PRIORITIES: Rhotic R, flap-T (butter becomes budder), weak forms of function words, thought groups.',
-    '',
-    'TONE: Exacting, passionate, direct. Short sentences. No filler. No false warmth.',
-    '',
-    'Start by setting the exercise and giving her the first line or prompt.'
+    'Listen for Italian interference: vowels after final consonants, equal syllable stress, rolled R, ship/sheep confusion, missing schwa, th as t/d.',
+    'Start by setting the exercise and giving the first line.'
   ];
-
   return lines.join('\n');
 }
-async function kickoff() {
-  setMic('wait');
-  addTyping();
-  try {
-    G.hist.push({role:'user', content:'Begin the session.'});
-    var rep = await ai();
+
+// ---------- PRON: diagnostic ----------
+function startDiagnostic() {
+  G.hist = [];
+  G.phase = 'diagnostic';
+  enterStudio();
+  setMic('wait'); addTyping();
+  var sys = diagnosticSys();
+  G.hist.push({role:'user', content:'Generate the diagnostic passage now.'});
+  ai(sys).then(function(rep) {
     G.hist.push({role:'assistant', content:rep});
     rmTyping();
-    addMsg('coach', rep);
-    if (G.audioOn) await tts(rep);
+    addCoachWithReading(rep);
+    if (G.audioOn) tts(rep);
     setMic('ready');
-  } catch(e) {
-    rmTyping();
-    toast('Connection error: ' + e.message);
-    setMic('ready');
-  }
+  }).catch(function(e) { rmTyping(); toast('Error: '+e.message); setMic('ready'); });
 }
 
-function doRec() {
-  if (!G.recording) { startRec(); } else { stopRec(); }
+function diagnosticSys() {
+  var lines = [
+    'You are an expert American-accent diagnostician working with an advanced Italian speaker.',
+    'This is the DIAGNOSTIC step. Your job: present ONE passage (about 60-90 words) for the student to read aloud.',
+    'The passage must be crafted to expose the sounds Italian speakers struggle with: rhotic R, the TH sounds, flap-T, short-i vs long-ee (ship/sheep), the cot/caught vowels, final consonants (no added vowel), schwa reduction, and word stress.',
+    'Make it sound like natural connected prose, not a word list.',
+    'Output format: a short one-sentence instruction, then the passage wrapped EXACTLY like this on its own lines:',
+    '[[READ]]',
+    'the passage text here',
+    '[[/READ]]',
+    'Do not analyse anything yet. Just give the instruction and the passage. Keep the instruction friendly but brief.'
+  ];
+  return lines.join('\n');
 }
+
+// after student reads diagnostic, analyse + build plan
+function analyseDiagnostic(transcript, audioUrl) {
+  addMsg('student', transcript, null, audioUrl);
+  G.hist.push({role:'user', content:'Here is my reading (transcribed): ' + transcript});
+  addTyping(); setMic('wait');
+  var sys = planSys();
+  ai(sys).then(function(rep) {
+    rmTyping();
+    var plan = extractPlan(rep);
+    if (plan) {
+      G.plan = plan;
+      G.currentLesson = 0;
+      G.hist = [];
+      saveStore();
+      var intro = rep.split('[[PLAN]]')[0].trim();
+      addMsg('coach', intro || 'I have analysed your reading and built your plan.');
+      setupChrome();
+      document.getElementById('plan-btn').style.display = '';
+      document.getElementById('plan-bar').style.display = 'block';
+      updatePlanBar();
+      setTimeout(showPlan, 600);
+      setMic('ready');
+    } else {
+      addMsg('coach', rep);
+      setMic('ready');
+    }
+  }).catch(function(e) { rmTyping(); toast('Error: '+e.message); setMic('ready'); });
+}
+
+function planSys() {
+  var lines = [
+    'You are an expert American-accent coach analysing an Italian speakers diagnostic reading.',
+    'Based on the transcription (and your knowledge of typical Italian-English interference), identify the specific sounds and patterns that need work.',
+    'Then design a personalised, progressive course of 5 to 8 lessons, ordered from most foundational to most advanced. Each lesson targets ONE clear area.',
+    'First write 2-3 sentences of warm but honest summary of what you heard.',
+    'Then output the plan EXACTLY in this machine-readable format (valid JSON, no markdown fences):',
+    '[[PLAN]]',
+    '{"summary":"one short line naming the focus of the course","lessons":[{"title":"Lesson title","focus":"what this lesson trains","goal":"the measurable goal to pass"}]}',
+    '[[/PLAN]]',
+    'The JSON must be valid and parseable. Keep titles short. 5-8 lessons.'
+  ];
+  return lines.join('\n');
+}
+
+function extractPlan(text) {
+  var a = text.indexOf('[[PLAN]]');
+  var b = text.indexOf('[[/PLAN]]');
+  if (a < 0 || b < 0) return null;
+  var json = text.substring(a + 8, b).trim();
+  try {
+    var obj = JSON.parse(json);
+    if (obj && obj.lessons && obj.lessons.length) {
+      for (var i=0;i<obj.lessons.length;i++) obj.lessons[i].done = false;
+      return obj;
+    }
+  } catch(e) {}
+  return null;
+}
+
+// ---------- PRON: resume ----------
+function resumePron() {
+  var wantSummary = document.getElementById('opt-summary').checked;
+  var wantReview = document.getElementById('opt-review').checked;
+  enterStudio();
+  G.phase = 'lesson';
+  setMic('wait'); addTyping();
+  var instr = 'Resume the course at lesson ' + (G.currentLesson+1) + '.';
+  if (wantSummary) instr += ' Begin with a brief progress summary.';
+  if (wantReview && G.currentLesson > 0) instr += ' Briefly review the previous lesson before continuing.';
+  if (!wantSummary && !wantReview) instr += ' Go straight into the lesson.';
+  G.hist.push({role:'user', content:instr});
+  ai(lessonSys()).then(function(rep) {
+    G.hist.push({role:'assistant', content:rep});
+    rmTyping();
+    addCoachWithReading(rep);
+    if (G.audioOn) tts(rep);
+    setMic('ready');
+  }).catch(function(e) { rmTyping(); toast('Error: '+e.message); setMic('ready'); });
+}
+
+function startLessonFromPlan() {
+  enterStudio();
+  G.phase = 'lesson';
+  G.hist = [];
+  setMic('wait'); addTyping();
+  G.hist.push({role:'user', content:'Begin lesson ' + (G.currentLesson+1) + ' now.'});
+  ai(lessonSys()).then(function(rep) {
+    G.hist.push({role:'assistant', content:rep});
+    rmTyping();
+    addCoachWithReading(rep);
+    if (G.audioOn) tts(rep);
+    setMic('ready');
+  }).catch(function(e) { rmTyping(); toast('Error: '+e.message); setMic('ready'); });
+}
+
+function lessonSys() {
+  var L = G.plan.lessons[G.currentLesson];
+  var planOverview = '';
+  for (var i=0;i<G.plan.lessons.length;i++) {
+    planOverview += (i+1) + '. ' + G.plan.lessons[i].title + (G.plan.lessons[i].done?' (done)':'') + '\n';
+  }
+  var lines = [
+    'You are a demanding, precise American-accent coach running a structured pronunciation course for an advanced Italian speaker. Pure pronunciation focus. No acting, no cinema or theatre.',
+    'COURSE: ' + (G.plan.summary || 'pronunciation'),
+    'FULL PLAN:\n' + planOverview,
+    'CURRENT LESSON ' + (G.currentLesson+1) + ': ' + L.title,
+    'This lesson trains: ' + L.focus,
+    'Pass goal: ' + L.goal,
+    '',
+    'HOW YOU TEACH:',
+    '- Give short things to read or repeat. When you want her to read something aloud, wrap it on its own lines as [[READ]] text [[/READ]] so the app can highlight it.',
+    '- After each attempt, give precise, honest feedback. Cite specific words and sounds. Be specific about WHAT was wrong and HOW to fix it (tongue position, etc).',
+    '- NEVER give false praise. Mechanical or inaccurate reads must be called out plainly.',
+    '- When a sound is clearly wrong, drill it in isolation, then in words, then in a sentence.',
+    '- When her pronunciation of THIS lessons target is consistently good across a few attempts, declare the lesson passed.',
+    '',
+    'WHEN THE LESSON IS PASSED: end your message with this exact tag on its own line: [[LESSON_PASSED]]',
+    'Only output that tag when you are genuinely satisfied she has met the goal. Do not rush it, but do not withhold it once earned. Keep responses concise, max 5 sentences plus any [[READ]] block.'
+  ];
+  return lines.join('\n');
+}
+
+// ---------- plan modal ----------
+function showPlan() {
+  if (!G.plan) return;
+  var inner = document.getElementById('pron-card-inner');
+  var html = '<h2>' + esc(G.plan.summary || 'Your Plan') + '</h2><p>Tap the current lesson to begin or continue it.</p><div class="plan-list">';
+  for (var i=0;i<G.plan.lessons.length;i++) {
+    var L = G.plan.lessons[i];
+    var cls = 'plan-item';
+    if (L.done) cls += ' done';
+    else if (i === G.currentLesson) cls += ' current';
+    var mark = L.done ? 'v' : (i+1);
+    html += '<div class="' + cls + '" onclick="jumpLesson(' + i + ')">' +
+      '<div class="pdot">' + mark + '</div>' +
+      '<div class="pi-body"><h4>' + esc(L.title) + '</h4><p>' + esc(L.focus) + '</p></div></div>';
+  }
+  html += '</div>';
+  html += '<button class="cta" onclick="closePlan()">Close</button>';
+  html += '<button class="cta ghost" onclick="exportProgress()">Export progress (.json)</button>';
+  inner.innerHTML = html;
+  document.getElementById('ov-pron').style.display = 'flex';
+}
+function closePlan() { document.getElementById('ov-pron').style.display = 'none'; }
+function jumpLesson(i) {
+  if (G.plan.lessons[i].done && i !== G.currentLesson) {
+    if (!confirm('Revisit this completed lesson?')) return;
+  }
+  G.currentLesson = i;
+  saveStore();
+  closePlan();
+  updatePlanBar();
+  startLessonFromPlan();
+}
+
+// ---------- recording ----------
+function doRec() { if (!G.recording) startRec(); else stopRec(); }
 
 function startRec() {
   if (G.bk === 'openai') {
@@ -444,138 +758,134 @@ function startRec() {
       var mime = 'audio/webm';
       try { if (!MediaRecorder.isTypeSupported(mime)) mime = 'audio/mp4'; } catch(e) {}
       G.mr = new MediaRecorder(stream, {mimeType: mime});
-      G.mr.ondataavailable = function(e) { if (e.data.size > 0) G.chunks.push(e.data); };
+      G.mr.ondataavailable = function(e) { if (e.data.size>0) G.chunks.push(e.data); };
       G.mr.onstop = function() {
         stream.getTracks().forEach(function(t){t.stop();});
-        var blob = new Blob(G.chunks, {type: mime});
+        var blob = new Blob(G.chunks, {type:mime});
         G.lastUrl = URL.createObjectURL(blob);
         procAudio(blob, mime);
       };
-      G.mr.start();
-      G.recording = true;
-      setMic('rec');
-    }).catch(function() {
-      toast('Microphone access denied. Please allow microphone access.');
-    });
+      G.mr.start(); G.recording = true; setMic('rec');
+    }).catch(function() { toast('Microphone access denied.'); });
   } else {
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) { toast('Speech recognition not supported. Try Chrome or Safari.'); return; }
+    if (!SR) { toast('Speech recognition not supported. Try Chrome/Safari.'); return; }
     G.recog = new SR();
-    G.recog.lang = 'en-US';
-    G.recog.continuous = false;
-    G.recog.interimResults = false;
-    G.recog.onresult = function(e) {
-      G.recording = false;
-      setMic('proc');
-      procText(e.results[0][0].transcript, null);
-    };
+    G.recog.lang = 'en-US'; G.recog.continuous = false; G.recog.interimResults = false;
+    G.recog.onresult = function(e) { G.recording=false; setMic('proc'); procText(e.results[0][0].transcript, null); };
     G.recog.onerror = function(e) { G.recording=false; setMic('ready'); toast('Speech error: '+e.error); };
-    G.recog.onend = function() { if (G.recording) { G.recording=false; setMic('ready'); } };
-    G.recog.start();
-    G.recording = true;
-    setMic('rec');
+    G.recog.onend = function() { if (G.recording){G.recording=false;setMic('ready');} };
+    G.recog.start(); G.recording = true; setMic('rec');
   }
 }
-
 function stopRec() {
-  if (G.bk === 'openai' && G.mr) {
-    G.mr.stop(); G.recording=false; setMic('proc');
-  } else if (G.recog) {
-    G.recog.stop(); G.recording=false; setMic('proc');
-  }
+  if (G.bk==='openai' && G.mr) { G.mr.stop(); G.recording=false; setMic('proc'); }
+  else if (G.recog) { G.recog.stop(); G.recording=false; setMic('proc'); }
 }
-
 function procAudio(blob, mime) {
-  var ext = mime.indexOf('mp4') >= 0 ? 'mp4' : 'webm';
+  var ext = mime.indexOf('mp4')>=0?'mp4':'webm';
   var fd = new FormData();
-  fd.append('file', blob, 'rec.' + ext);
+  fd.append('file', blob, 'rec.'+ext);
   fd.append('model', 'whisper-1');
   fd.append('language', 'en');
   fetch('https://api.openai.com/v1/audio/transcriptions', {
-    method:'POST',
-    headers:{'Authorization':'Bearer '+G.ok},
-    body:fd
+    method:'POST', headers:{'Authorization':'Bearer '+G.ok}, body:fd
   }).then(function(res) {
     return res.json().then(function(d) {
-      if (!res.ok) throw new Error((d.error && d.error.message) || 'Whisper error');
+      if (!res.ok) throw new Error((d.error&&d.error.message)||'Whisper error');
       return d;
     });
-  }).then(function(d) {
-    procText(d.text, G.lastUrl);
-  }).catch(function(e) {
-    toast('Transcription error: ' + e.message);
-    setMic('ready');
-  });
+  }).then(function(d) { procText(d.text, G.lastUrl); })
+    .catch(function(e) { toast('Transcription error: '+e.message); setMic('ready'); });
 }
 
+// ---------- routing user speech ----------
 function procText(text, audioUrl) {
   if (!text.trim()) { setMic('ready'); return; }
+  if (G.mode === 'pron' && G.phase === 'diagnostic') {
+    analyseDiagnostic(text, audioUrl);
+    return;
+  }
   addMsg('student', text, null, audioUrl);
   G.hist.push({role:'user', content:text});
-  addTyping();
-  setMic('wait');
-  ai().then(function(rep) {
+  addTyping(); setMic('wait');
+  var sys = (G.mode==='acting') ? actingSys() : lessonSys();
+  ai(sys).then(function(rep) {
     G.hist.push({role:'assistant', content:rep});
     rmTyping();
-    if (G.fb === 'struct') {
-      var p = splitRep(rep);
-      addMsg('coach', p.scene, p.notes);
+    var passed = rep.indexOf('[[LESSON_PASSED]]') >= 0;
+    var clean = rep.replace('[[LESSON_PASSED]]','').trim();
+    addCoachWithReading(clean);
+    if (G.audioOn) tts(clean);
+    if (passed && G.mode==='pron') handleLessonPassed();
+    setMic('ready');
+  }).catch(function(e) { rmTyping(); toast('Error: '+e.message); setMic('ready'); });
+}
+
+function handleLessonPassed() {
+  G.plan.lessons[G.currentLesson].done = true;
+  var next = G.currentLesson + 1;
+  var hasNext = next < G.plan.lessons.length;
+  if (hasNext) G.currentLesson = next;
+  saveStore();
+  updatePlanBar();
+  setTimeout(function() {
+    var inner = document.getElementById('pron-card-inner');
+    if (hasNext) {
+      inner.innerHTML =
+        '<h2>Lesson passed</h2>' +
+        '<p>Well done. Next up: <strong style="color:var(--gold)">' + esc(G.plan.lessons[next].title) + '</strong></p>' +
+        '<button class="cta" onclick="closePlan();startLessonFromPlan()">Continue to next lesson</button>' +
+        '<button class="cta ghost" onclick="closePlan()">Take a break</button>' +
+        '<button class="cta ghost" onclick="exportProgress()">Export progress (.json)</button>';
     } else {
-      addMsg('coach', rep);
+      inner.innerHTML =
+        '<h2>Course complete</h2>' +
+        '<p>You have finished every lesson in this plan. You can revisit any lesson from the plan view, or start a fresh diagnostic.</p>' +
+        '<button class="cta" onclick="closePlan()">Close</button>' +
+        '<button class="cta ghost" onclick="exportProgress()">Export progress (.json)</button>';
     }
-    if (G.audioOn) tts(rep);
-    setMic('ready');
-  }).catch(function(e) {
-    rmTyping();
-    toast('AI error: ' + e.message);
-    setMic('ready');
-  });
+    document.getElementById('ov-pron').style.display = 'flex';
+  }, 900);
 }
 
-function splitRep(text) {
-  var m = text.search(/coach notes:|notes:/i);
-  if (m > 0) return {scene: text.substring(0,m).trim(), notes: text.substring(m).trim()};
-  return {scene: text, notes: null};
-}
-
-function ai() {
-  var sys = buildSys();
+// ---------- AI / TTS ----------
+function ai(sys) {
   if (G.bk === 'openai') {
     var msgs = [{role:'system',content:sys}].concat(G.hist);
     return fetch('https://api.openai.com/v1/chat/completions', {
       method:'POST',
       headers:{'Authorization':'Bearer '+G.ok,'Content-Type':'application/json'},
-      body:JSON.stringify({model:'gpt-4o',messages:msgs,max_tokens:400,temperature:0.8})
+      body:JSON.stringify({model:'gpt-4o',messages:msgs,max_tokens:600,temperature:0.7})
     }).then(function(r) {
       return r.json().then(function(d) {
-        if (!r.ok) throw new Error((d.error && d.error.message) || 'OpenAI error');
+        if (!r.ok) throw new Error((d.error&&d.error.message)||'OpenAI error');
         return d.choices[0].message.content;
       });
     });
   } else {
     return fetch('https://api.anthropic.com/v1/messages', {
       method:'POST',
-      headers:{
-        'x-api-key':G.ck,
-        'anthropic-version':'2023-06-01',
-        'content-type':'application/json',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,system:sys,messages:G.hist})
+      headers:{'x-api-key':G.ck,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,system:sys,messages:G.hist})
     }).then(function(r) {
       return r.json().then(function(d) {
-        if (!r.ok) throw new Error((d.error && d.error.message) || 'Claude error');
+        if (!r.ok) throw new Error((d.error&&d.error.message)||'Claude error');
         return d.content[0].text;
       });
     });
   }
 }
 
+function stripTags(text) {
+  return text.replace(/\[\[READ\]\]/g,'').replace(/\[\[\/READ\]\]/g,'').replace(/\[\[LESSON_PASSED\]\]/g,'').replace(/\[\[PLAN\]\][\s\S]*?\[\[\/PLAN\]\]/g,'').trim();
+}
+
 function tts(text) {
-  var p = splitRep(text);
-  var s = (p.scene || text).substring(0,1000);
+  var s = stripTags(text).substring(0,1000);
+  if (!s) return;
   if (G.bk === 'openai') {
-    return fetch('https://api.openai.com/v1/audio/speech', {
+    fetch('https://api.openai.com/v1/audio/speech', {
       method:'POST',
       headers:{'Authorization':'Bearer '+G.ok,'Content-Type':'application/json'},
       body:JSON.stringify({model:'tts-1',input:s,voice:G.voice,speed:0.95})
@@ -583,16 +893,13 @@ function tts(text) {
       if (!r.ok) return;
       return r.blob().then(function(b) {
         var u = URL.createObjectURL(b);
-        var a = new Audio(u); a.play();
-        return new Promise(function(res){a.onended=res;});
+        new Audio(u).play();
       });
     }).catch(function(){});
   } else {
-    return new Promise(function(res) {
-      var u = new SpeechSynthesisUtterance(s.substring(0,500));
-      u.lang='en-US'; u.rate=0.95; u.onend=res;
-      speechSynthesis.speak(u);
-    });
+    var u = new SpeechSynthesisUtterance(s.substring(0,500));
+    u.lang='en-US'; u.rate=0.95;
+    speechSynthesis.speak(u);
   }
 }
 
@@ -601,29 +908,52 @@ function playRec(url) {
   new Audio(url).play().catch(function(){toast('Could not play recording.');});
 }
 
+// ---------- UI helpers ----------
 function setMic(st) {
   var btn = document.getElementById('mbtn');
   var lbl = document.getElementById('mlbl');
   var wf = document.getElementById('wf');
   btn.classList.remove('rec'); wf.classList.remove('on'); btn.disabled=false;
-  if (st==='ready') { btn.textContent='mic'; lbl.textContent='Tap to speak'; }
-  if (st==='rec')   { btn.textContent='stop'; btn.classList.add('rec'); wf.classList.add('on'); lbl.textContent='Listening... tap to stop'; }
-  if (st==='proc')  { btn.textContent='...'; btn.disabled=true; lbl.textContent='Processing...'; }
-  if (st==='wait')  { btn.textContent='mic'; btn.disabled=true; lbl.textContent='Coach is speaking...'; }
+  if (st==='ready'){ btn.textContent='mic'; lbl.textContent='Tap to speak'; }
+  if (st==='rec'){ btn.textContent='stop'; btn.classList.add('rec'); wf.classList.add('on'); lbl.textContent='Listening... tap to stop'; }
+  if (st==='proc'){ btn.textContent='...'; btn.disabled=true; lbl.textContent='Processing...'; }
+  if (st==='wait'){ btn.textContent='mic'; btn.disabled=true; lbl.textContent='Coach is speaking...'; }
 }
 
-function addMsg(role, content, notes, audioUrl) {
+function addCoachWithReading(text) {
+  var ra = text.indexOf('[[READ]]');
+  var rb = text.indexOf('[[/READ]]');
+  if (ra >= 0 && rb > ra) {
+    var before = text.substring(0, ra).trim();
+    var passage = text.substring(ra+8, rb).trim();
+    var after = text.substring(rb+9).trim();
+    var body = before;
+    if (after) body += (body?'\n\n':'') + after;
+    addMsg('coach', body || 'Read this aloud:', null, null, passage);
+  } else {
+    addMsg('coach', stripTags(text));
+  }
+}
+
+function addMsg(role, content, notes, audioUrl, readPassage) {
   var conv = document.getElementById('conv');
   var div = document.createElement('div');
   div.className = 'msg ' + role;
-  var rlbl = role === 'coach' ? 'The Coach' : 'You';
+  var rlbl = role==='coach'?'The Coach':'You';
   var rHtml;
-  if (role === 'student' && audioUrl) {
+  if (role==='student' && audioUrl) {
     rHtml = '<div class="mrole"><button class="rbtn" onclick="playRec(\'' + audioUrl + '\')">replay</button>' + esc(rlbl) + '</div>';
   } else {
     rHtml = '<div class="mrole">' + esc(rlbl) + '</div>';
   }
-  div.innerHTML = rHtml + '<div class="bub">' + esc(content) + '</div>' + (notes ? '<div class="npill"><div class="nlbl">Coach Notes</div>' + esc(notes) + '</div>' : '');
+  var inner = rHtml + '<div class="bub">' + esc(content) + '</div>';
+  if (readPassage) {
+    inner += '<div class="read-card"><div class="rl">Read aloud</div><div class="rt">' + esc(readPassage) + '</div></div>';
+  }
+  if (notes) {
+    inner += '<div class="npill"><div class="nlbl">Coach Notes</div>' + esc(notes) + '</div>';
+  }
+  div.innerHTML = inner;
   conv.appendChild(div);
   conv.scrollTop = conv.scrollHeight;
 }
@@ -636,7 +966,6 @@ function addTyping() {
   conv.appendChild(div);
   conv.scrollTop = conv.scrollHeight;
 }
-
 function rmTyping() { var e=document.getElementById('typing'); if(e) e.remove(); }
 
 function esc(t) {
@@ -646,10 +975,19 @@ function esc(t) {
 var toastT;
 function toast(msg) {
   var t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('on');
+  t.className = 'toast on';
+  t.textContent = msg;
   clearTimeout(toastT);
   toastT = setTimeout(function(){t.classList.remove('on');}, 4000);
 }
+function toastOk(msg) {
+  var t = document.getElementById('toast');
+  t.className = 'toast ok on';
+  t.textContent = msg;
+  clearTimeout(toastT);
+  toastT = setTimeout(function(){t.classList.remove('on');}, 4000);
+}
+
 </script>
 </body>
 </html>
