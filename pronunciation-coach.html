@@ -270,15 +270,20 @@ function selTg(btn, gid) {
 }
 
 function doStart() {
-  var ok = document.getElementById('oai-key').value.trim();
-  var ck = document.getElementById('cl-key').value.trim();
-  if (G.bk === 'openai' && !ok) { toast('Please enter your OpenAI API key.'); return; }
-  if (G.bk === 'claude' && !ck) { toast('Please enter your Anthropic API key.'); return; }
-  G.ok = ok;
-  G.ck = ck;
-  G.voice = document.getElementById('oai-voice').value;
-  document.getElementById('ov-settings').style.display = 'none';
-  document.getElementById('setup-ov').style.display = 'flex';
+  try {
+    var ok = document.getElementById('oai-key').value.trim();
+    var ck = document.getElementById('cl-key').value.trim();
+    toast('DEBUG: backend=' + G.bk + ' key_len=' + ok.length);
+    if (G.bk === 'openai' && !ok) { toast('Please enter your OpenAI API key.'); return; }
+    if (G.bk === 'claude' && !ck) { toast('Please enter your Anthropic API key.'); return; }
+    G.ok = ok;
+    G.ck = ck;
+    G.voice = document.getElementById('oai-voice').value;
+    document.getElementById('ov-settings').style.display = 'none';
+    document.getElementById('setup-ov').style.display = 'flex';
+  } catch(e) {
+    toast('ERROR: ' + e.message);
+  }
 }
 
 function openSettings() {
