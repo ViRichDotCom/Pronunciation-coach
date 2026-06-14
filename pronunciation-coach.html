@@ -366,56 +366,55 @@ function buildSys() {
     : 'Weave feedback into your coaching voice like a director between takes. Lead with what needs fixing. Acknowledge what worked only briefly. Never use empty praise unless the delivery was genuinely excellent.';
 
   var sp = G.script
-    ? '
-
-SCRIPT FOR THIS SESSION:
-' + G.script.substring(0, 3000) + '
-Work through this script line by line. Give one line at a time. After she delivers it, give precise feedback before moving on.'
+    ? '\n\nSCRIPT FOR THIS SESSION:\n' + G.script.substring(0, 3000) + '\nWork through this script line by line. Give one line at a time. After she delivers it, give precise feedback before moving on.'
     : '';
 
-  var th = {
-    'coach-choice': 'Choose a challenging exercise. Make it demanding.',
-    'audition': 'Audition prep, cold reading. Introduce the character briefly, drop her into the scene immediately.',
-    'scene-work': 'Scene work with varying emotional beats. Focus on authentic American speech under pressure.',
-    'monologue': 'Monologue coaching. Give her a passage, then dissect specific sections.',
-    'dialect': 'American English phonetics: rhotic R, flap-T, low-back merger, schwa reduction, intonation.',
-    'interview': 'Character interview. She stays in character, you interview her. Push hard.',
-    'improv': 'Improvisation. Unexpected scenarios requiring quick spontaneous American speech.'
-  };
+  var th = {};
+  th["coach-choice"] = 'Choose a challenging exercise. Make it demanding.';
+  th["audition"] = 'Audition prep, cold reading. Introduce the character briefly, drop her into the scene immediately.';
+  th["scene-work"] = 'Scene work with varying emotional beats. Focus on authentic American speech under pressure.';
+  th["monologue"] = 'Monologue coaching. Give her a passage, then dissect specific sections.';
+  th["dialect"] = 'American English phonetics: rhotic R, flap-T, low-back merger, schwa reduction, intonation.';
+  th["interview"] = 'Character interview. She stays in character, you interview her. Push hard.';
+  th["improv"] = 'Improvisation. Unexpected scenarios requiring quick spontaneous American speech.';
 
-  return 'You are a demanding world-class American accent and acting coach. You do not give empty encouragement. You are direct and honest.
+  var lines = [
+    'You are a demanding world-class American accent and acting coach.',
+    'You do not give empty encouragement. You are direct and honest.',
+    '',
+    'Your student is an advanced Italian speaker training for professional acting in American cinema and theatre.',
+    '',
+    'FOCUS: ' + fd,
+    'THEME: ' + (th[G.theme] || th["coach-choice"]) + sp,
+    '',
+    'RULES:',
+    '1. NEVER give positive feedback for a poor or mechanical performance. Say: That was mechanical. The accent was showing. Again.',
+    '2. NEVER interpret random sounds (uh, ah, mm) as artistic choices. Say: That was not a performance. Give me the line.',
+    '3. If she delivers something genuinely well, say so in one sentence then push further.',
+    '4. Always name the specific problem before suggesting the fix.',
+    '5. Keep responses concise: max 4-5 sentences unless giving structured notes.',
+    '6. If the input is incoherent, ask her to try again.',
+    '',
+    'FEEDBACK: ' + fbd,
+    '',
+    'ITALIAN INTERFERENCE TO LISTEN FOR:',
+    '- Adding vowels after final consonants (film-a, take-a)',
+    '- Equal syllable stress vs English stress-timed rhythm',
+    '- Rolled R instead of American rhotic R',
+    '- Short i in ship spoken as long ee in sheep',
+    '- Lack of schwa reduction in unstressed syllables',
+    '- Melodic Italian intonation vs flatter American patterns',
+    '- th sounds replaced by t or d',
+    '',
+    'ACCENT PRIORITIES: Rhotic R, flap-T (butter becomes budder), weak forms of function words, thought groups.',
+    '',
+    'TONE: Exacting, passionate, direct. Short sentences. No filler. No false warmth.',
+    '',
+    'Start by setting the exercise and giving her the first line or prompt.'
+  ];
 
-Your student is an advanced Italian speaker training for professional acting in American cinema and theatre.
-
-FOCUS: ' + fd + '
-THEME: ' + (th[G.theme] || th['coach-choice']) + sp + '
-
-RULES:
-1. NEVER give positive feedback for a poor or mechanical performance. Say so directly: That was mechanical. The Italian accent was showing. Again.
-2. NEVER interpret random sounds (uh, ah, mm) as artistic choices. Say: That was not a performance. Give me the line.
-3. If she delivers something genuinely well, say so in one sentence then push further.
-4. Always name the specific problem before suggesting the fix.
-5. Keep responses concise: max 4-5 sentences unless giving structured notes.
-6. If the input is incoherent, ask her to try again.
-
-FEEDBACK: ' + fbd + '
-
-ITALIAN INTERFERENCE TO LISTEN FOR:
-- Adding vowels after final consonants (film-a, take-a)
-- Equal syllable stress vs English stress-timed rhythm
-- Rolled R instead of American rhotic R
-- Short i in ship spoken as long ee in sheep
-- Lack of schwa reduction in unstressed syllables
-- Melodic Italian intonation vs flatter American patterns
-- th sounds replaced by t or d
-
-ACCENT PRIORITIES: Rhotic R, flap-T (butter becomes budder), weak forms of function words, thought groups.
-
-TONE: Exacting, passionate, direct. Short sentences. No filler. No false warmth.
-
-Start by setting today's exercise and giving her the first line or prompt.';
+  return lines.join('\n');
 }
-
 async function kickoff() {
   setMic('wait');
   addTyping();
@@ -435,11 +434,7 @@ async function kickoff() {
 }
 
 function doRec() {
-  if (!G.recording) {
-    startRec();
-  } else {
-    stopRec();
-  }
+  if (!G.recording) { startRec(); } else { stopRec(); }
 }
 
 function startRec() {
@@ -474,8 +469,8 @@ function startRec() {
       setMic('proc');
       procText(e.results[0][0].transcript, null);
     };
-    G.recog.onerror = function(e) { G.recording = false; setMic('ready'); toast('Speech error: ' + e.error); };
-    G.recog.onend = function() { if (G.recording) { G.recording = false; setMic('ready'); } };
+    G.recog.onerror = function(e) { G.recording=false; setMic('ready'); toast('Speech error: '+e.error); };
+    G.recog.onend = function() { if (G.recording) { G.recording=false; setMic('ready'); } };
     G.recog.start();
     G.recording = true;
     setMic('rec');
@@ -484,13 +479,9 @@ function startRec() {
 
 function stopRec() {
   if (G.bk === 'openai' && G.mr) {
-    G.mr.stop();
-    G.recording = false;
-    setMic('proc');
+    G.mr.stop(); G.recording=false; setMic('proc');
   } else if (G.recog) {
-    G.recog.stop();
-    G.recording = false;
-    setMic('proc');
+    G.recog.stop(); G.recording=false; setMic('proc');
   }
 }
 
@@ -501,16 +492,16 @@ function procAudio(blob, mime) {
   fd.append('model', 'whisper-1');
   fd.append('language', 'en');
   fetch('https://api.openai.com/v1/audio/transcriptions', {
-    method: 'POST',
-    headers: {'Authorization': 'Bearer ' + G.ok},
-    body: fd
+    method:'POST',
+    headers:{'Authorization':'Bearer '+G.ok},
+    body:fd
   }).then(function(res) {
-    return res.json().then(function(data) {
-      if (!res.ok) throw new Error(data.error && data.error.message || 'Whisper error');
-      return data;
+    return res.json().then(function(d) {
+      if (!res.ok) throw new Error((d.error && d.error.message) || 'Whisper error');
+      return d;
     });
-  }).then(function(data) {
-    procText(data.text, G.lastUrl);
+  }).then(function(d) {
+    procText(d.text, G.lastUrl);
   }).catch(function(e) {
     toast('Transcription error: ' + e.message);
     setMic('ready');
@@ -542,38 +533,38 @@ function procText(text, audioUrl) {
 }
 
 function splitRep(text) {
-  var m = text.search(/coach\s+notes?:|notes?:/i);
-  if (m > 0) return {scene: text.substring(0, m).trim(), notes: text.substring(m).trim()};
+  var m = text.search(/coach notes:|notes:/i);
+  if (m > 0) return {scene: text.substring(0,m).trim(), notes: text.substring(m).trim()};
   return {scene: text, notes: null};
 }
 
 function ai() {
   var sys = buildSys();
   if (G.bk === 'openai') {
-    var msgs = [{role:'system', content:sys}].concat(G.hist);
+    var msgs = [{role:'system',content:sys}].concat(G.hist);
     return fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {'Authorization': 'Bearer ' + G.ok, 'Content-Type': 'application/json'},
-      body: JSON.stringify({model:'gpt-4o', messages:msgs, max_tokens:400, temperature:0.8})
+      method:'POST',
+      headers:{'Authorization':'Bearer '+G.ok,'Content-Type':'application/json'},
+      body:JSON.stringify({model:'gpt-4o',messages:msgs,max_tokens:400,temperature:0.8})
     }).then(function(r) {
       return r.json().then(function(d) {
-        if (!r.ok) throw new Error(d.error && d.error.message || 'OpenAI error');
+        if (!r.ok) throw new Error((d.error && d.error.message) || 'OpenAI error');
         return d.choices[0].message.content;
       });
     });
   } else {
     return fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'x-api-key': G.ck,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json',
-        'anthropic-dangerous-direct-browser-access': 'true'
+      method:'POST',
+      headers:{
+        'x-api-key':G.ck,
+        'anthropic-version':'2023-06-01',
+        'content-type':'application/json',
+        'anthropic-dangerous-direct-browser-access':'true'
       },
-      body: JSON.stringify({model:'claude-sonnet-4-6', max_tokens:400, system:sys, messages:G.hist})
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,system:sys,messages:G.hist})
     }).then(function(r) {
       return r.json().then(function(d) {
-        if (!r.ok) throw new Error(d.error && d.error.message || 'Claude error');
+        if (!r.ok) throw new Error((d.error && d.error.message) || 'Claude error');
         return d.content[0].text;
       });
     });
@@ -582,25 +573,24 @@ function ai() {
 
 function tts(text) {
   var p = splitRep(text);
-  var s = (p.scene || text).substring(0, 1000);
+  var s = (p.scene || text).substring(0,1000);
   if (G.bk === 'openai') {
     return fetch('https://api.openai.com/v1/audio/speech', {
-      method: 'POST',
-      headers: {'Authorization': 'Bearer ' + G.ok, 'Content-Type': 'application/json'},
-      body: JSON.stringify({model:'tts-1', input:s, voice:G.voice, speed:0.95})
+      method:'POST',
+      headers:{'Authorization':'Bearer '+G.ok,'Content-Type':'application/json'},
+      body:JSON.stringify({model:'tts-1',input:s,voice:G.voice,speed:0.95})
     }).then(function(r) {
       if (!r.ok) return;
       return r.blob().then(function(b) {
         var u = URL.createObjectURL(b);
-        var a = new Audio(u);
-        a.play();
-        return new Promise(function(res) { a.onended = res; });
+        var a = new Audio(u); a.play();
+        return new Promise(function(res){a.onended=res;});
       });
     }).catch(function(){});
   } else {
     return new Promise(function(res) {
-      var u = new SpeechSynthesisUtterance(s.substring(0, 500));
-      u.lang = 'en-US'; u.rate = 0.95; u.onend = res;
+      var u = new SpeechSynthesisUtterance(s.substring(0,500));
+      u.lang='en-US'; u.rate=0.95; u.onend=res;
       speechSynthesis.speak(u);
     });
   }
@@ -615,13 +605,11 @@ function setMic(st) {
   var btn = document.getElementById('mbtn');
   var lbl = document.getElementById('mlbl');
   var wf = document.getElementById('wf');
-  btn.classList.remove('rec');
-  wf.classList.remove('on');
-  btn.disabled = false;
-  if (st === 'ready') { btn.textContent = 'mic'; lbl.textContent = 'Tap to speak'; }
-  if (st === 'rec') { btn.textContent = 'stop'; btn.classList.add('rec'); wf.classList.add('on'); lbl.textContent = 'Listening... tap to stop'; }
-  if (st === 'proc') { btn.textContent = '...'; btn.disabled = true; lbl.textContent = 'Processing...'; }
-  if (st === 'wait') { btn.textContent = 'mic'; btn.disabled = true; lbl.textContent = 'Coach is speaking...'; }
+  btn.classList.remove('rec'); wf.classList.remove('on'); btn.disabled=false;
+  if (st==='ready') { btn.textContent='mic'; lbl.textContent='Tap to speak'; }
+  if (st==='rec')   { btn.textContent='stop'; btn.classList.add('rec'); wf.classList.add('on'); lbl.textContent='Listening... tap to stop'; }
+  if (st==='proc')  { btn.textContent='...'; btn.disabled=true; lbl.textContent='Processing...'; }
+  if (st==='wait')  { btn.textContent='mic'; btn.disabled=true; lbl.textContent='Coach is speaking...'; }
 }
 
 function addMsg(role, content, notes, audioUrl) {
@@ -631,7 +619,7 @@ function addMsg(role, content, notes, audioUrl) {
   var rlbl = role === 'coach' ? 'The Coach' : 'You';
   var rHtml;
   if (role === 'student' && audioUrl) {
-    rHtml = '<div class="mrole"><button class="rbtn" onclick="playRec('' + audioUrl + '')">replay</button>' + esc(rlbl) + '</div>';
+    rHtml = '<div class="mrole"><button class="rbtn" onclick="playRec(\'' + audioUrl + '\')">replay</button>' + esc(rlbl) + '</div>';
   } else {
     rHtml = '<div class="mrole">' + esc(rlbl) + '</div>';
   }
@@ -643,17 +631,16 @@ function addMsg(role, content, notes, audioUrl) {
 function addTyping() {
   var conv = document.getElementById('conv');
   var div = document.createElement('div');
-  div.className = 'msg coach'; div.id = 'typing';
-  div.innerHTML = '<div class="mrole">The Coach</div><div class="bub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
+  div.className='msg coach'; div.id='typing';
+  div.innerHTML='<div class="mrole">The Coach</div><div class="bub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
   conv.appendChild(div);
   conv.scrollTop = conv.scrollHeight;
 }
 
-function rmTyping() { var e = document.getElementById('typing'); if (e) e.remove(); }
+function rmTyping() { var e=document.getElementById('typing'); if(e) e.remove(); }
 
 function esc(t) {
-  return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/
-/g,'<br>');
+  return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 }
 
 var toastT;
